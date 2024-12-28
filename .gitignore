@@ -63,3 +63,6 @@
 */timing/
 */testbench/
 */*_sim/
+/simulation
+/db
+/incremental_db
