@@ -29,7 +29,7 @@ module bitcoin_miner (
 
     // Bitcoin mining signals
     reg [31:0] nonce;
-    reg [255:0] target;
+    reg [255:0] target; // = 256'h00000000000000000002905c0000000000000000000000000000000000000000;
     reg mining;
     reg [639:0] data; // 80 bytes for block header
     reg [7:0] block_header [0:79]; // 80 bytes for block header
@@ -114,7 +114,7 @@ module bitcoin_miner (
             for (sha_index = 0; sha_index < SHA_CORE_COUNT; sha_index = sha_index + 1) begin
                 if (sha256_ready[sha_index]) begin
                     sha256_start[sha_index] <= 1'b0;
-                    if (hash[sha_index] < target) begin
+                    if (hash[sha_index] < 'h00000000000000000002905c0000000000000000000000000000000000000000) begin
                         // Found a valid nonce
                         mining <= 1'b0;
                         nonce_byte_index <= 2'b0;

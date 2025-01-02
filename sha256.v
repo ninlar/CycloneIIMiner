@@ -23,10 +23,15 @@ module sha256 (
     // Working variables
     reg [31:0] a, b, c, d, e, f, g, h;
     reg [31:0] W [0:63];
-    reg [5:0] t;
+    reg [6:0] t;
     reg [2:0] state;
+	 
+    reg [31:0] T1, T2;
+    reg [31:0] K;
 
-    // State encoding
+    integer i;
+	 
+	 // State encoding
     localparam IDLE = 3'b000,
                INIT = 3'b001,
                LOAD = 3'b010,
@@ -60,7 +65,6 @@ module sha256 (
                 end
                 INIT: begin
                     // Prepare message schedule for the first 512-bit chunk
-                    integer i;
                     for (i = 0; i < 16; i = i + 1) begin
                         W[i] = data[639 - i*32 -: 32];
                     end
@@ -74,8 +78,6 @@ module sha256 (
                 COMPRESS: begin
                     // Main loop for the first 512-bit chunk
                     if (t < 64) begin
-                        reg [31:0] T1, T2;
-                        reg [31:0] K;
                         case (t)
                             0: K = 32'h428a2f98; 1: K = 32'h71374491; 2: K = 32'hb5c0fbcf; 3: K = 32'he9b5dba5;
                             4: K = 32'h3956c25b; 5: K = 32'h59f111f1; 6: K = 32'h923f82a4; 7: K = 32'hab1c5ed5;
